@@ -1,0 +1,49 @@
+/* Estilos para el botón */
+.hotel-button {
+    position: relative;
+    background-color: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .hotel-image {
+    width: 100%;
+    height: auto;
+    transition: transform 1s ease;
+  }
+  
+  /* Texto que aparece al hacer hover */
+  .hover-text {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: white;
+    font-size: 18px;
+    opacity: 0; /* Inicialmente oculto */
+    transition: opacity 0.3s ease-in-out;
+  }
+  
+  .hotel-button:hover .hotel-image {
+    transform: scale(1.4); /* Aumenta la imagen al hacer hover */
+  }
+  
+  .hotel-button:hover .hover-text {
+    opacity: 1; /* El texto se hace visible cuando se hace hover */
+  }
+  
+  .widget-button-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .widget-text {
+    margin-top: 8px;
+    font-size: 14px;
+    color: #000; /* Cambia el color si lo deseas */
+    text-align: center;
+  }
+  
