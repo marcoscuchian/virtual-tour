@@ -10,10 +10,24 @@ function Widget() {
   const [currentScene, setCurrentScene] = useState(null);
 
   const toggleFullscreen = () => {
+    const elem = document.documentElement;
     setIsFullscreen(!isFullscreen);
+
     if (!isFullscreen) {
-      if (document.documentElement.requestFullscreen) {
-        document.documentElement.requestFullscreen();
+      if (elem.requestFullscreen) {
+        elem.requestFullscreen();
+      } else if (elem.webkitRequestFullscreen) {
+        elem.webkitRequestFullscreen(); // Safari
+      } else if (elem.msRequestFullscreen) {
+        elem.msRequestFullscreen(); // IE/Edge
+      }
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      } else if (document.webkitExitFullscreen) {
+        document.webkitExitFullscreen();
+      } else if (document.msExitFullscreen) {
+        document.msExitFullscreen();
       }
     }
   };
@@ -46,7 +60,7 @@ function Widget() {
   const ilussionImg = 'https://hotelsbyillusion.com/wp-content/uploads/2024/09/ILLUSION-GROUP-Logos-8.png';
   const expressImg = 'https://hotelsbyillusion.com/wp-content/uploads/2024/09/ILLUSION-GROUP-Logos-9.png';
   const miniroomsImg = 'https://hotelsbyillusion.com/wp-content/uploads/2024/09/ILLUSION-GROUP-Logos-10.png';
-  const widgetIconImg = 'https://hotelsbyillusion.com/wp-content/uploads/2024/12/5201125.png';
+  const widgetIconImg = 'https://hotelsbyillusion.com/wp-content/uploads/2025/01/5201125.png';
 
   return (
     <div className={`widget ${isFullscreen ? 'fullscreen' : ''}`}>

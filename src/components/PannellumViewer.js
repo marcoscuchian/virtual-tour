@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import './PannellumViewer.css'; 
+import './PannellumViewer.css';
 
 const PannellumViewer = ({ currentScene, setScene }) => {
   const viewerRef = useRef(null);
@@ -7,23 +7,33 @@ const PannellumViewer = ({ currentScene, setScene }) => {
 
   useEffect(() => {
     if (viewerRef.current && window.pannellum) {
-      setIsLoaded(false); 
+      setIsLoaded(false);
 
       const viewer = window.pannellum.viewer(viewerRef.current, {
         type: 'equirectangular',
         panorama: currentScene.panorama,
         autoLoad: true,
+        gyroscopeControl: true,
+        draggable: true,
+        touchZoom: true,
+        mouseZoom: false,
+        keyboardZoom: false,
+        showFullscreenCtrl: true,
         hotSpots: currentScene.hotspots.map((hotspot) => ({
           ...hotspot,
           cssClass: hotspot.cssClass,
-          clickHandlerFunc:
-            hotspot.type === 'scene'
-              ? () => setScene(hotspot.sceneId)
-              : () => window.open(hotspot.URL, '_blank'),
+          clickHandlerFunc: () => {
+            if (hotspot.type === 'scene') {
+              setScene(hotspot.sceneId);
+            } else {
+              window.open(hotspot.URL, '_blank');
+            }
+          },
         })),
       });
 
       viewer.on('load', () => setIsLoaded(true));
+      viewer.on('error', (e) => console.error('Pannellum error:', e)); // Debugging
 
       return () => {
         viewer.destroy();
@@ -37,6 +47,7 @@ const PannellumViewer = ({ currentScene, setScene }) => {
         ref={viewerRef}
         className={`pannellum-viewer ${isLoaded ? '' : 'loading'}`}
       ></div>
+      {!isLoaded && <div className="loading-indicator">Cargando...</div>}
     </div>
   );
 };

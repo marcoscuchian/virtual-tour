@@ -13,6 +13,7 @@ const PannellumTour = ({ closeTour }) => {
             "firstScene": "habitacion",
             "sceneFadeDuration": 1000,
             "autoLoad": true,
+            "gyroscopeControl": true,
             "showControls": true
           },
           "scenes": {
