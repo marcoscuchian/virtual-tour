@@ -17,9 +17,9 @@ function Widget() {
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
       } else if (elem.webkitRequestFullscreen) {
-        elem.webkitRequestFullscreen(); // Safari
+        elem.webkitRequestFullscreen(); 
       } else if (elem.msRequestFullscreen) {
-        elem.msRequestFullscreen(); // IE/Edge
+        elem.msRequestFullscreen(); 
       }
     } else {
       if (document.exitFullscreen) {
@@ -49,12 +49,14 @@ function Widget() {
   const startTour = (tourId) => {
     const selectedTour = tours.find((tour) => tour.id === tourId);
     setActiveTour(selectedTour);
-    setCurrentScene(selectedTour.scenes[0]);
+    setCurrentScene(selectedTour?.scenes[0] || null); 
   };
 
   const changeScene = (sceneId) => {
-    const nextScene = activeTour.scenes.find((scene) => scene.id === sceneId);
-    if (nextScene) setCurrentScene(nextScene);
+    const nextScene = activeTour?.scenes.find((scene) => scene.id === sceneId);
+    if (nextScene) {
+      setCurrentScene(nextScene);
+    }
   };
 
   const ilussionImg = 'https://hotelsbyillusion.com/wp-content/uploads/2024/09/ILLUSION-GROUP-Logos-8.png';
@@ -105,6 +107,20 @@ function Widget() {
           <button onClick={closeWidget} className="close-button" title="Cerrar widget">
             ×
           </button>
+
+          <div className="fixed-panorama-buttons">
+            {activeTour.scenes
+              .filter(scene => scene.show_button) 
+              .map((scene) => (
+                <button
+                  key={scene.id}
+                  onClick={() => changeScene(scene.id)}
+                  className={`scene-button ${currentScene?.id === scene.id ? 'active' : ''}`}
+                >
+                  {scene.name_show || `Escena ${scene.id}`} 
+                </button>
+              ))}
+          </div>
         </div>
       )}
     </div>

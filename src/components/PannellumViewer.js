@@ -6,10 +6,10 @@ const PannellumViewer = ({ currentScene, setScene }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
+    if (!currentScene) return; 
+    let viewer;
     if (viewerRef.current && window.pannellum) {
-      setIsLoaded(false);
-
-      const viewer = window.pannellum.viewer(viewerRef.current, {
+      viewer = window.pannellum.viewer(viewerRef.current, {
         type: 'equirectangular',
         panorama: currentScene.panorama,
         autoLoad: true,
@@ -17,6 +17,7 @@ const PannellumViewer = ({ currentScene, setScene }) => {
         draggable: true,
         touchZoom: true,
         mouseZoom: false,
+        autoRotate: 5,
         keyboardZoom: false,
         showFullscreenCtrl: true,
         hotSpots: currentScene.hotspots.map((hotspot) => ({
@@ -33,10 +34,12 @@ const PannellumViewer = ({ currentScene, setScene }) => {
       });
 
       viewer.on('load', () => setIsLoaded(true));
-      viewer.on('error', (e) => console.error('Pannellum error:', e)); // Debugging
+      viewer.on('error', (e) => console.error('Pannellum error:', e));
 
       return () => {
-        viewer.destroy();
+        if (viewer) {
+          viewer.destroy();
+        }
       };
     }
   }, [currentScene, setScene]);
